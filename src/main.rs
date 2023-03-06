@@ -20,10 +20,12 @@ impl fmt::Display for ThreeArgAux {
 
 fn help() {
 	println!("Incorrect Format");
-	println!("cargo run -- [k] | cargo run -- [k] [x] [y]");
+	println!("cargo run [k] | cargo run [k] [x] [y]");
 	print!("Where k will determine the size of the matix, so that the matrix is of size\n
-	 n x n, where n = 2^k.");
-	 println!("If you like you can give the position of the special square [x] [y]");
+	n x n, where n = 2^k.");
+	println!("If you like you can give the position of the special square [x] [y]");
+	println!("If more arguments are desired, the above doesn't apply.");
+	print!("The program recive argumentes in the follong order: k, x, y; with x and y optional.")
 
 }
 

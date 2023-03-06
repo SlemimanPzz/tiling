@@ -30,6 +30,8 @@ pub mod solve_pave {
         }        
     }
     
+
+    // Puts a tile in place, althought makes no verification
     fn tile(vec : &mut Vec<Vec<i32>>, x_1 : i32,y_1 :i32 ,  x_2 : i32, y_2 :i32 , x_3 :i32, y_3:i32, val : i32) {
         vec[x_1 as usize][y_1 as usize] = val;
         vec[x_2 as usize][y_2 as usize] = val;
@@ -53,6 +55,11 @@ pub mod solve_pave {
     pub fn solve_with_pre_sqr(k : u32, x : i32, y : i32) {
         let n : i32  = 2_i32.pow(k);
         let mut vec : Vec<Vec<i32>> = vec![vec![0;n as usize];n as usize];
+        if x >= n || y >= n {
+            println!("Invalid cordinates for special square");
+            println!(r"Both have to be less than {}", n);
+            return;}
+
         vec[x as usize][y as usize] = -1;
         solve(n, 0, 0, &mut vec, &mut 0);
         println!("Solved");
@@ -60,6 +67,9 @@ pub mod solve_pave {
     }
 
     // Solves the problem
+    // n is the submatrix size (n x n)
+    // x and y is where the submatrix strats
+    // n_tile the subcount of tile that have been place
     fn solve(n: i32, x :i32, y : i32 ,vec :&mut Vec<Vec<i32>>, n_tile : &mut i32) {
 
         let mut special_sqr_row : i32 = -1;
@@ -98,9 +108,6 @@ pub mod solve_pave {
                 x + center, y + center,
                 x + center - 1, y + center,
                 *n_tile);
-        //     vec[(x + n / 2) as usize][(y + (n / 2) - 1) as usize] = *n_tile;
-        //     vec[(x + n / 2) as usize][(y + n / 2) as usize] = *n_tile;
-        //     vec[(x + n / 2 - 1) as usize][(y + n / 2) as usize] = *n_tile;
         } // 3rd quadrant
         else if special_sqr_row >= x + (n / 2) && special_sqr_col < y +(n / 2) {
             *n_tile = *n_tile +1;
@@ -109,10 +116,6 @@ pub mod solve_pave {
                 x + center, y + center,
                 x + center - 1, y + center - 1,
                 *n_tile);
-            // vec[(x + center - 1) as usize][(y + center) as usize] = *n_tile;
-            // vec[(x + center) as usize][(y  + center) as usize] = *n_tile;
-            // vec[(x + center - 1) as usize][(y + center - 1) as usize] = *n_tile; 
-
         } // 2nd quadrant
         else if special_sqr_row < x + center && special_sqr_col >= y + center {
             *n_tile = *n_tile +1; 
@@ -121,10 +124,6 @@ pub mod solve_pave {
                 x + center, y + center,
                 x + center - 1, y + center - 1,
                 *n_tile);
-            // vec[(x + center) as usize][(y + center - 1) as usize] = *n_tile;
-            // vec[(x + center) as usize][(y + center) as usize] = *n_tile;
-            // vec[(x + center - 1) as usize][(y + center - 1) as usize] = *n_tile;
-
         } // 4th quadrant
         else if special_sqr_row >= x + center && special_sqr_col >= y + center {
             *n_tile = *n_tile + 1;
@@ -133,15 +132,12 @@ pub mod solve_pave {
                 x + center, y + center - 1,
                 x + center - 1, y + center - 1,
                 *n_tile);
-            // vec[(x + center - 1) as usize][(y + center) as usize] = *n_tile;
-            // vec[(x + center) as usize][(y + center - 1) as usize] = *n_tile;
-            // vec[(x + center - 1) as usize][(y + center - 1) as usize] = *n_tile;
         }
-
 
         println!("Step {}", n_tile);
         print_tiling(vec);
-        // Recurcsion
+        // Recurcsions
+
         solve(center, x, y, vec, n_tile); 
         println!("Step {}", n_tile);
         print_tiling(vec);
