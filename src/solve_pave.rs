@@ -64,13 +64,12 @@ pub mod solve_pave {
 
         let mut special_sqr_row : i32 = -1;
         let mut special_sqr_col : i32 = -1;
-        let center = n / 2;
 
         // Base case
         if n == 2 {
             *n_tile = *n_tile + 1;
-            for i in 0..n {
-                for j in 0..n {
+            for i in 0..2 {
+                for j in 0..2 {
                     if vec[(x+i) as usize][(y+j) as usize ] == 0 {
                         vec[(x+i) as usize][(y+j) as usize] = *n_tile;
                     }
@@ -78,10 +77,10 @@ pub mod solve_pave {
             }
             return;
         }
-
+        let center = n / 2;
         // Find the square that is already fill
-        for i in 0..(x+n) {
-            for j in 0..(y+n) {
+        for i in x..(x+n) {
+            for j in y..(y+n) {
                 if vec[i as usize][j as usize] != 0 {
                     special_sqr_row = i;
                     special_sqr_col = j;
