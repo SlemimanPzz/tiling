@@ -3,7 +3,6 @@ mod solve_pave;
 
 use std::{thread::sleep, time::Duration, fmt};
 
-use rand::Error;
 use solve_pave::solve_pave::{solve_with_rand_sqr, solve_with_pre_sqr};
 
 #[derive(Clone, PartialEq)]
@@ -19,18 +18,32 @@ impl fmt::Display for ThreeArgAux {
 }
 
 
+fn help() {
+	println!("Incorrect Format");
+	println!("cargo run -- [k] | cargo run -- [k] [x] [y]");
+	print!("Where k will determine the size of the matix, so that the matrix is of size\n
+	 n x n, where n = 2^k.");
+	 println!("If you like you can give the position of the special square [x] [y]");
+
+}
+
 fn main() {
 	let args: Vec<String> = std::env::args().collect();
+
+	
 	if args.len() != 2 && args.len() != 4  {
-		println!("Incorrect Format");
-		println!("cargo run [k] | cargo run [k] [x] [y]");
+		help();
 		return;
 	}
 	if args.len() == 2 {
+		if args[1] == "help" || args[1] == "-h" || args[1] == "-help" {
+			help();
+			return;
+		}
 		let k2  = args[1].parse();
 		match k2 {
 			Ok(k) => {
-				println!("Solving with random special square position");
+				println!("Solving with random special square position.");
 				solve_with_rand_sqr(k);
 			},
 			Err(_) => {
@@ -55,8 +68,8 @@ fn main() {
 			}
 		}
 		if mistake_cache.contains(&ThreeArgAux::FormatMistake) {
-				println!("Format Mistakes in cargo [k] [x] [y]");
-				println!("                         {} {} {}", mistake_cache[0], mistake_cache[1], mistake_cache[2]);
+				println!("Format Mistakes in cargo run -- [k] [x] [y]");
+				println!("                                {} {} {}", mistake_cache[0], mistake_cache[1], mistake_cache[2]);
 				println!("Terminating execution");
 				return;
 		}
